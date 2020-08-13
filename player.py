@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
 
         self.is_right = True
 
-
+        #corriger les projectiles
         self.all_projectiles = pygame.sprite.Group()
 
     def animate(self, index):
@@ -201,8 +201,6 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             self.rect.y = self.current_y
             self.rect.x= self.current_x 
-            for projectile in self.all_projectiles:
-                projectile.move_right()
 
         #shoot left :
         elif self.is_shooting_left == True:
@@ -217,8 +215,15 @@ class Player(pygame.sprite.Sprite):
             self.rect.x= self.current_x 
             self.rect.y = self.current_y
 
+        self.shoot()
+
+    def shoot(self):
+        if self.is_right == True:
             for projectile in self.all_projectiles:
-                projectile.move_left()
+                    projectile.move_right()
+        else:
+            for projectile in self.all_projectiles:
+                    projectile.move_left()
 
     def move_right(self):
         self.current_x  += self.velocity

@@ -23,13 +23,13 @@ class Projectile(pygame.sprite.Sprite):
     def move_left(self):
         self.image = pygame.transform.rotate(self.image,270)
         self.rect.x -= self.velocity
-        if self.rect.x < 0:
+        if self.rect.x < -10:
             self.remove()
 
     def move_right(self):
         self.image = pygame.transform.rotate(self.image,90)
         self.rect.x += self.velocity
 
-        if self.rect.x > 400:
+        if self.rect.x > 450:
             self.remove()
             
