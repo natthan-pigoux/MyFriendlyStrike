@@ -1,13 +1,15 @@
 import pygame
 from player import Player
 from projectile import Projectile
+from map import Map
 
 class Game:
 
     def __init__(self):
         self.is_playing = False
         self.player = Player(self)
-        self.projectile = Projectile(self.player)
+        self.map = Map()
+        self.projectile = Projectile(self.player, self.player.is_right)
         self.all_players = pygame.sprite.Group()
         self.all_players.add(self.player)
         self.pressed = {}
@@ -34,14 +36,11 @@ class Game:
             self.player.animate('is_running')
             self.player.move_left()
 
-        elif self.pressed.get(pygame.K_LCTRL):
-            self.player.animate('is_getting_down')
-
 
     def launch_projectile(self):
         self.projectile.number -=1
         if self.projectile.number > 0 :
-            self.player.all_projectiles.add(Projectile(self.player))
+            self.player.all_projectiles.add(Projectile(self.player,self.player.is_right))
             self.player.animate('is_shooting')
 
     def check_collision(self, sprite, group):

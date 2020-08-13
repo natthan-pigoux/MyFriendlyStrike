@@ -218,12 +218,8 @@ class Player(pygame.sprite.Sprite):
         self.shoot()
 
     def shoot(self):
-        if self.is_right == True:
             for projectile in self.all_projectiles:
-                    projectile.move_right()
-        else:
-            for projectile in self.all_projectiles:
-                    projectile.move_left()
+                    projectile.move()
 
     def move_right(self):
         self.current_x  += self.velocity

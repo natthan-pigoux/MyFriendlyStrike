@@ -6,17 +6,20 @@ pygame.init()
 
 game = Game()
 
-screen_width = 400
-screen_height = 400
+background = game.map.image
+screen_width = background.get_width()
+screen_height = background.get_height()
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption('friendly Strike')
+
+background = pygame.image.load('images/png/BG.png')
 
 clock = pygame.time.Clock()
 running = True
 
 while running:
 
-    screen.fill((0,0,0))
+    screen.blit(background, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -32,6 +35,9 @@ while running:
 
             if event.key == pygame.K_t:
                 game.launch_projectile()
+
+            if event.key == pygame.K_LCTRL:
+                game.player.animate('is_getting_down')
 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
