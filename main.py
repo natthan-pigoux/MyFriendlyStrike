@@ -6,7 +6,7 @@ pygame.init()
 
 game = Game()
 
-background = game.map.image
+background = pygame.image.load('images/png/BG.png')
 screen_width = background.get_width()
 screen_height = background.get_height()
 screen = pygame.display.set_mode((screen_width,screen_height))

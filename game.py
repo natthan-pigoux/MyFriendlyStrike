@@ -1,17 +1,20 @@
 import pygame
 from player import Player
 from projectile import Projectile
-from map import Map
+from map import *
 
 class Game:
 
     def __init__(self):
         self.is_playing = False
         self.player = Player(self)
-        self.map = Map()
+        self.decor = [Cactus(self), Stone(self)]
         self.projectile = Projectile(self.player, self.player.is_right)
         self.all_players = pygame.sprite.Group()
         self.all_players.add(self.player)
+        self.map_sprite = pygame.sprite.Group()
+        for i in self.decor:
+            self.map_sprite.add(i)
         self.pressed = {}
         self.key_up = {}
 
@@ -25,6 +28,7 @@ class Game:
         self.all_players.draw(screen)
         self.all_players.update(0.2)
         self.player.all_projectiles.draw(screen)
+        self.map_sprite.draw(screen)
 
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x +self.player.rect.width< screen.get_width():
             self.player.is_right = True
