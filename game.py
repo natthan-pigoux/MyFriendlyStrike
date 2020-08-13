@@ -1,20 +1,21 @@
 import pygame
 from player import Player
 from projectile import Projectile
-from map import *
+
 
 class Game:
 
-    def __init__(self):
+    def __init__(self,map_sprite, screen_width, screen_height):
+        self.map_sprite = map_sprite
+        self.screen_height = screen_height
+        self.screen_width = screen_width
+
         self.is_playing = False
         self.player = Player(self)
-        self.decor = [Cactus(self), Stone(self)]
         self.projectile = Projectile(self.player, self.player.is_right)
         self.all_players = pygame.sprite.Group()
         self.all_players.add(self.player)
-        self.map_sprite = pygame.sprite.Group()
-        for i in self.decor:
-            self.map_sprite.add(i)
+
         self.pressed = {}
         self.key_up = {}
 
@@ -25,21 +26,20 @@ class Game:
         self.is_playing = False
 
     def update(self, screen):
-        self.all_players.draw(screen)
-        self.all_players.update(0.2)
-        self.player.all_projectiles.draw(screen)
-        self.map_sprite.draw(screen)
 
-        if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x +self.player.rect.width< screen.get_width():
+        if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x +self.player.rect.width< screen.get_width() and self.player.is_falling == False:
             self.player.is_right = True
             self.player.animate('is_running')
             self.player.move_right()
 
-        elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x >0:
+        elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x >0 and self.player.is_falling == False:
             self.player.is_right = False
             self.player.animate('is_running')
             self.player.move_left()
 
+        self.all_players.update()
+        self.all_players.draw(screen)
+        self.player.all_projectiles.draw(screen)
 
     def launch_projectile(self):
         self.projectile.number -=1

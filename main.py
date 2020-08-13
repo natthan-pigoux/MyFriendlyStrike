@@ -1,10 +1,11 @@
 #!/usr/bin/python3.6
 import pygame, sys
 from game import Game
+from map import Map
 import math
 pygame.init()
 
-game = Game()
+
 
 background = pygame.image.load('images/png/BG.png')
 screen_width = background.get_width()
@@ -13,6 +14,13 @@ screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption('friendly Strike')
 
 background = pygame.image.load('images/png/BG.png')
+
+
+this_map = Map(screen_width, screen_height) 
+
+map_sprite = this_map.map_sprite
+
+game = Game(map_sprite, screen_width, screen_height)
 
 clock = pygame.time.Clock()
 running = True
@@ -42,6 +50,7 @@ while running:
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
 
+    map_sprite.draw(screen)
     game.update(screen)
     pygame.display.flip()
     clock.tick(60)
