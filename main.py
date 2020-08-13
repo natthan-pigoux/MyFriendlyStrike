@@ -19,8 +19,8 @@ background = pygame.image.load('images/png/BG.png')
 this_map = Map(screen_width, screen_height) 
 
 map_sprite = this_map.map_sprite
-
-game = Game(map_sprite, screen_width, screen_height)
+ladder_sprite = this_map.ladder_sprite
+game = Game(map_sprite, ladder_sprite, screen_width, screen_height)
 
 clock = pygame.time.Clock()
 running = True
@@ -50,6 +50,7 @@ while running:
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
 
+    ladder_sprite.draw(screen)
     map_sprite.draw(screen)
     game.update(screen)
     pygame.display.flip()

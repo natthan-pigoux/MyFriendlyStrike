@@ -29,6 +29,16 @@ class Stone(pygame.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
+class Ladder(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.image = pygame.image.load('images/ladders/ladder2.png')
+        self.image = pygame.transform.scale(self.image, (100,400))
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
 
 class Map():
 
@@ -44,6 +54,8 @@ class Map():
         self.decor.append(Stone(self.screen_width*0 + 100, self.screen_height*0.5))
         self.decor.append(Stone(self.screen_width*0.5, self.screen_height-200))
         self.map_sprite = pygame.sprite.Group()
+        self.ladder_sprite = pygame.sprite.Group()
+        self.ladder_sprite.add(Ladder(100, self.screen_height*0.5))
         self.create_map()
 
     def create_map(self):

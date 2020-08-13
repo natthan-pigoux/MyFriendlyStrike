@@ -129,7 +129,7 @@ class Player(pygame.sprite.Sprite):
 
     def fall(self, speed):
         if not self.game.check_collision(self, self.game.map_sprite) and self.is_jumping_left == False and self.is_jumping_right == False:
-            if self.current_y < self.game.screen_height -100:
+            if self.current_y < self.game.screen_height -110:
                 self.is_falling = True
                 self.current_y +=speed*20
                 self.image = self.down_right_sprites[0]
@@ -200,32 +200,34 @@ class Player(pygame.sprite.Sprite):
     def jump(self,speed):
 
         #jump right :
-        if self.is_jumping_right == True:
-            self.current_sprite +=speed
-            if self.current_sprite >= len(self.jump_right_sprites):
-                self.current_sprite = 0 
-                self.is_jumping_right = False
-                self.rect.y = self.current_y
+        if self.rect.x + self.rect.width < self.game.screen_width and self.is_falling == False:
+            if self.is_jumping_right == True:
+                self.current_sprite +=speed
+                if self.current_sprite >= len(self.jump_right_sprites):
+                    self.current_sprite = 0 
+                    self.is_jumping_right = False
+                    self.rect.y = self.current_y
 
-            self.image = self.jump_right_sprites[int(self.current_sprite)]
-            self.image = pygame.transform.scale(self.image,(self.size,self.size)) 
-            self.current_x += self.velocity 
-            self.rect.x = self.current_x 
-            self.rect.y -= self.jump_height/3
+                self.image = self.jump_right_sprites[int(self.current_sprite)]
+                self.image = pygame.transform.scale(self.image,(self.size,self.size)) 
+                self.current_x += self.velocity 
+                self.rect.x = self.current_x 
+                self.rect.y -= self.jump_height/3
 
         #jump left :
-        elif self.is_jumping_left == True:
-            self.current_sprite +=speed
-            if self.current_sprite >= len(self.jump_left_sprites):
-                self.current_sprite = 0 
-                self.is_jumping_left = False
-                self.rect.y = self.current_y
+        if self.rect.x >0 and self.is_falling == False:
+            if self.is_jumping_left == True:
+                self.current_sprite +=speed
+                if self.current_sprite >= len(self.jump_left_sprites):
+                    self.current_sprite = 0 
+                    self.is_jumping_left = False
+                    self.rect.y = self.current_y
 
-            self.image = self.jump_left_sprites[int(self.current_sprite)]
-            self.image = pygame.transform.scale(self.image,(self.size,self.size))
-            self.current_x -= self.velocity 
-            self.rect.x = self.current_x  
-            self.rect.y -= self.jump_height/3
+                self.image = self.jump_left_sprites[int(self.current_sprite)]
+                self.image = pygame.transform.scale(self.image,(self.size,self.size))
+                self.current_x -= self.velocity 
+                self.rect.x = self.current_x  
+                self.rect.y -= self.jump_height/3
 
     def run(self,speed):
             #run right :
@@ -259,3 +261,11 @@ class Player(pygame.sprite.Sprite):
 
     def move_left(self):
         self.current_x  -= self.velocity
+
+    def move_up(self):
+        if self.game.check_collision(self, self.game.ladder_sprite) :
+            self.current_y -= self.velocity
+
+    def move_down(self):
+        if self.game.check_collision(self, self.game.ladder_sprite) :
+            self.current_y += self.velocity

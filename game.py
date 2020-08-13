@@ -5,8 +5,9 @@ from projectile import Projectile
 
 class Game:
 
-    def __init__(self,map_sprite, screen_width, screen_height):
+    def __init__(self,map_sprite, ladder_sprite, screen_width, screen_height):
         self.map_sprite = map_sprite
+        self.ladder_sprite = ladder_sprite
         self.screen_height = screen_height
         self.screen_width = screen_width
 
@@ -36,6 +37,12 @@ class Game:
             self.player.is_right = False
             self.player.animate('is_running')
             self.player.move_left()
+
+        elif self.pressed.get(pygame.K_UP):
+            self.player.move_up()
+
+        elif self.pressed.get(pygame.K_DOWN):
+            self.player.move_down()
 
         self.all_players.update()
         self.all_players.draw(screen)
