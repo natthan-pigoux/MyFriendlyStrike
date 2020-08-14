@@ -39,13 +39,13 @@ while running:
             game.pressed[event.key] = True
 
             if event.key == pygame.K_SPACE:
-                game.player.animate('is_jumping')
+                game.player_1.animate('is_jumping')
 
             if event.key == pygame.K_t:
-                game.launch_projectile()
+                game.player_1.launch_projectile()
 
             if event.key == pygame.K_LCTRL:
-                game.player.animate('is_getting_down')
+                game.player_1.animate('is_getting_down')
 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False

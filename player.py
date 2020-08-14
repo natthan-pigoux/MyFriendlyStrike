@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.max_health = 100
         self.velocity = 10
         self.jump_height = 50
-
+        self.bullet_number = 50
         self.attack = 20
 
         self.down_right_sprites = []
@@ -87,8 +87,18 @@ class Player(pygame.sprite.Sprite):
 
         self.is_right = True
 
-        #corriger les projectiles
         self.all_projectiles = pygame.sprite.Group()
+
+    def take_damage(self):
+        if self.health >0:
+            self.health -= 20
+                    
+
+    def update_health_bar(self, surface):
+        
+        if self.health > 0 :
+            pygame.draw.rect(surface,(60,60,60), [self.rect.x-20, self.rect.y-10, self.max_health, 5])
+            pygame.draw.rect(surface, (239, 51, 10), [self.rect.x-20, self.rect.y-10, self.health, 5])
 
     def animate(self, index):
         if index =='is_getting_down':
@@ -127,8 +137,9 @@ class Player(pygame.sprite.Sprite):
         
         self.run(speed)
 
+
     def fall(self, speed):
-        if not self.game.check_collision(self, self.game.map_sprite) and self.is_jumping_left == False and self.is_jumping_right == False:
+        if not self.game.check_collision_group(self, self.game.map_sprite) and self.is_jumping_left == False and self.is_jumping_right == False:
             if self.current_y < self.game.screen_height -110:
                 self.is_falling = True
                 self.current_y +=speed*20
@@ -168,9 +179,6 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
             self.rect.x= self.current_x 
             self.rect.y = self.current_y
-
-        for projectile in self.all_projectiles:
-            projectile.move()
 
     def get_down(self,speed):
         #down_right : 
@@ -255,6 +263,12 @@ class Player(pygame.sprite.Sprite):
             self.rect.x= self.current_x 
             self.rect.y = self.current_y
 
+
+    def launch_projectile(self):
+        self.bullet_number -=1
+        if self.bullet_number > 0 :
+            self.all_projectiles.add(Projectile(self,self.is_right))
+            self.animate('is_shooting')
 
     def move_right(self):
         self.current_x  += self.velocity

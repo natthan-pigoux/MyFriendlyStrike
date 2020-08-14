@@ -9,7 +9,6 @@ class Projectile(pygame.sprite.Sprite):
         super().__init__()
         self.player = player
         self.velocity = 25
-        self.number = 50
         self.image = pygame.image.load('images/bullet.png')
         self.image = pygame.transform.scale(self.image,(10,10)) 
         self.image = pygame.transform.rotate(self.image,90)
@@ -32,4 +31,10 @@ class Projectile(pygame.sprite.Sprite):
 
             if self.rect.x > 1900:
                 self.remove()
+        for player in self.player.game.all_players:
+            if not player == self.player:
+                if self.player.game.check_collision_sprite(player, self):
+                    player.take_damage()
+                    self.remove()
+
             

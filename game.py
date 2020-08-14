@@ -12,10 +12,14 @@ class Game:
         self.screen_width = screen_width
 
         self.is_playing = False
-        self.player = Player(self)
-        self.projectile = Projectile(self.player, self.player.is_right)
+        self.player_1 = Player(self)
+        self.player_2 = Player(self)
+        self.player_2.rect.x = screen_width -200
+        self.player_2.rect.y = screen_height -200
+
         self.all_players = pygame.sprite.Group()
-        self.all_players.add(self.player)
+        self.all_players.add(self.player_1)
+        self.all_players.add(self.player_2)
 
         self.pressed = {}
         self.key_up = {}
@@ -28,32 +32,41 @@ class Game:
 
     def update(self, screen):
 
-        if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x +self.player.rect.width< screen.get_width() and self.player.is_falling == False:
-            self.player.is_right = True
-            self.player.animate('is_running')
-            self.player.move_right()
+        if self.pressed.get(pygame.K_RIGHT) and self.player_1.rect.x +self.player_1.rect.width< screen.get_width() and self.player_1.is_falling == False:
+            self.player_1.is_right = True
+            self.player_1.animate('is_running')
+            self.player_1.move_right()
 
-        elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x >0 and self.player.is_falling == False:
-            self.player.is_right = False
-            self.player.animate('is_running')
-            self.player.move_left()
+        elif self.pressed.get(pygame.K_LEFT) and self.player_1.rect.x >0 and self.player_1.is_falling == False:
+            self.player_1.is_right = False
+            self.player_1.animate('is_running')
+            self.player_1.move_left()
 
         elif self.pressed.get(pygame.K_UP):
-            self.player.move_up()
+            self.player_1.move_up()
 
         elif self.pressed.get(pygame.K_DOWN):
-            self.player.move_down()
+            self.player_1.move_down()
 
         self.all_players.update()
         self.all_players.draw(screen)
-        self.player.all_projectiles.draw(screen)
 
-    def launch_projectile(self):
-        self.projectile.number -=1
-        if self.projectile.number > 0 :
-            self.player.all_projectiles.add(Projectile(self.player,self.player.is_right))
-            self.player.animate('is_shooting')
+        for player in self.all_players:
+            player.all_projectiles.draw(screen)
+            player.update_health_bar(screen)
+            for projectile in player.all_projectiles:
+                projectile.move()
 
-    def check_collision(self, sprite, group):
+    def launch_projectile(self, player):
+        player.bullet_number -=1
+        if player.bullet_number > 0 :
+            player.all_projectiles.add(Projectile(player,player.is_right))
+            player.animate('is_shooting')
+
+    def check_collision_group(self, sprite, group):
 
         return pygame.sprite.spritecollide(sprite, group, False, pygame.sprite.collide_mask)
+
+    def check_collision_sprite(self, sprite1, sprite2):
+
+        return pygame.sprite.collide_mask(sprite1, sprite2)
