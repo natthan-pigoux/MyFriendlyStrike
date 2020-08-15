@@ -25,9 +25,7 @@ game = Game(map_sprite, ladder_sprite, screen_width, screen_height)
 clock = pygame.time.Clock()
 running = True
 
-while running:
-
-    screen.blit(background, (0, 0))
+def key_manager():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -38,20 +36,34 @@ while running:
         elif event.type == pygame.KEYDOWN:
             game.pressed[event.key] = True
 
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_RCTRL:
                 game.player_1.animate('is_jumping')
 
-            if event.key == pygame.K_t:
+            if event.key == pygame.K_RETURN:
                 game.player_1.launch_projectile()
 
-            if event.key == pygame.K_LCTRL:
+            if event.key == pygame.K_RSHIFT:
                 game.player_1.animate('is_getting_down')
+
+            if event.key == pygame.K_SPACE:
+                game.player_2.animate('is_jumping')
+
+            if event.key == pygame.K_t:
+                game.player_2.launch_projectile()
+
+            if event.key == pygame.K_LCTRL:
+                game.player_2.animate('is_getting_down')
 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
 
-    ladder_sprite.draw(screen)
+while running:
+
+    screen.blit(background, (0, 0))
+    key_manager()
+
     map_sprite.draw(screen)
+    ladder_sprite.draw(screen)
     game.update(screen)
     pygame.display.flip()
     clock.tick(60)

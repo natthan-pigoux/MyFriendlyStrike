@@ -52,7 +52,7 @@ class Map():
         self.decor.append(Cactus(self.screen_width*0.62, self.screen_height-200))
         self.decor.append(Stone(self.screen_width*0, self.screen_height*0.5))
         self.decor.append(Stone(self.screen_width*0 + 100, self.screen_height*0.5))
-        self.decor.append(Stone(self.screen_width*0.5, self.screen_height-200))
+        self.decor.append(Stone(self.screen_width*0.5, self.screen_height-100))
         self.map_sprite = pygame.sprite.Group()
         self.ladder_sprite = pygame.sprite.Group()
         self.ladder_sprite.add(Ladder(100, self.screen_height*0.5+ 50))
